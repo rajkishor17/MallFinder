@@ -1,0 +1,206 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Mall {
+  id                  String     @id @default(cuid())
+  name                String
+  description         String?
+  address             String?
+  area                String?
+  city                String?
+  state               String?
+  latitude            Float?
+  longitude           Float?
+  imageUrl            String?
+  status              MallStatus @default(EXISTING)
+  openingHours        String?
+  expectedOpeningDate String?
+  features            String?
+  storesCount         Int?
+  amenities           String?
+  // SEO Fields
+  metaTitle           String?
+  metaDescription     String?
+  keywords            String?
+  ogImage             String?
+  canonicalUrl        String?
+  createdAt           DateTime   @default(now())
+  updatedAt           DateTime   @updatedAt
+  stores              Store[]
+  advertisements      Advertisement[]
+}
+
+model Store {
+  id           String      @id @default(cuid())
+  mallId       String
+  name         String
+  description  String?
+  category     String
+  floor        String?
+  unitNumber   String?
+  phone        String?
+  website      String?
+  imageUrl     String?
+  status       StoreStatus @default(OPEN)
+  openingHours String?
+  // SEO Fields
+  metaTitle       String?
+  metaDescription String?
+  keywords        String?
+  ogImage         String?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  mall            Mall        @relation(fields: [mallId], references: [id], onDelete: Cascade)
+  images          StoreImage[]
+}
+
+model StoreImage {
+  id        String   @id @default(cuid())
+  storeId   String
+  url       String
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  store     Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+  @@index([storeId])
+}
+
+model Area {
+  id        String   @id @default(cuid())
+  name      String
+  cityId    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  city      City?    @relation(fields: [cityId], references: [id], onDelete: Cascade)
+
+  @@unique([name, cityId])
+  @@index([cityId])
+}
+
+model City {
+  id        String   @id @default(cuid())
+  name      String
+  stateId   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  state     State    @relation(fields: [stateId], references: [id], onDelete: Cascade)
+  areas     Area[]
+
+  @@unique([name, stateId])
+  @@index([stateId])
+}
+
+model State {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  cities    City[]
+}
+
+model StoreCategory {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  icon      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum MallStatus {
+  EXISTING
+  UPCOMING
+}
+
+enum StoreStatus {
+  OPEN
+  COMING_SOON
+  CLOSED
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String?
+  role      String   @default("admin")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Page {
+  id            String   @id @default(cuid())
+  slug          String   @unique
+  title         String
+  content       String
+  metaTitle     String?
+  metaDescription String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Feature {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  icon      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Amenity {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  icon      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Advertisement {
+  id          String           @id @default(cuid())
+  title       String
+  position    AdPosition
+  type        AdType
+  imageUrl    String?
+  linkUrl     String?
+  htmlCode    String?
+  isActive    Boolean          @default(true)
+  sortOrder   Int              @default(0)
+  // Mall-specific ad support (null means global ad)
+  mallId      String?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  mall        Mall?            @relation(fields: [mallId], references: [id], onDelete: Cascade)
+
+  @@index([mallId])
+  @@index([position])
+}
+
+enum AdPosition {
+  HEADER
+  FOOTER
+  LEFT_SIDEBAR
+  RIGHT_SIDEBAR
+  // Mall-specific positions
+  MALL_HEADER
+  MALL_FOOTER
+  MALL_SIDEBAR
+}
+
+enum AdType {
+  IMAGE
+  HTML
+}
+
+model SiteSettings {
+  id          String   @id @default(cuid())
+  key         String   @unique
+  value       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
