@@ -97,6 +97,12 @@ export async function POST(request: Request) {
         features: Array.isArray(body.features) ? body.features.join(',') : body.features || null,
         storesCount: body.storesCount ? parseInt(body.storesCount) : null,
         amenities: Array.isArray(body.amenities) ? body.amenities.join(',') : body.amenities || null,
+        // SEO Fields
+        metaTitle: body.metaTitle || null,
+        metaDescription: body.metaDescription || null,
+        keywords: body.keywords || null,
+        ogImage: body.ogImage || null,
+        canonicalUrl: body.canonicalUrl || null,
       },
     });
     

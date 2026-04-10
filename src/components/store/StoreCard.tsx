@@ -34,6 +34,7 @@ interface StoreCardProps {
   store: Store;
   onClick?: () => void;
   showBorderStatus?: boolean;
+  isUpcoming?: boolean;
 }
 
 const statusConfig = {
@@ -43,6 +44,34 @@ const statusConfig = {
     borderColor: 'border-l-emerald-500',
     cardBorder: 'border-emerald-300 dark:border-emerald-700',
     cardBg: 'hover:border-emerald-400 dark:hover:border-emerald-600',
+    icon: CheckCircle,
+  },
+  COMING_SOON: {
+    label: 'Coming Soon',
+    color: 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950 dark:text-amber-300 dark:border-amber-800',
+    borderColor: 'border-l-amber-500',
+    cardBorder: 'border-amber-300 dark:border-amber-700',
+    cardBg: 'hover:border-amber-400 dark:hover:border-amber-600',
+    icon: Hourglass,
+  },
+  CLOSED: {
+    label: 'Closed',
+    color: 'bg-red-50 text-red-700 border-red-200 dark:bg-red-950 dark:text-red-300 dark:border-red-800',
+    borderColor: 'border-l-red-500',
+    cardBorder: 'border-red-300 dark:border-red-700',
+    cardBg: 'hover:border-red-400 dark:hover:border-red-600',
+    icon: XCircle,
+  },
+};
+
+// Upcoming mall status config (amber colors for all statuses)
+const upcomingStatusConfig = {
+  OPEN: {
+    label: 'Open',
+    color: 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950 dark:text-amber-300 dark:border-amber-800',
+    borderColor: 'border-l-amber-500',
+    cardBorder: 'border-amber-300 dark:border-amber-700',
+    cardBg: 'hover:border-amber-400 dark:hover:border-amber-600',
     icon: CheckCircle,
   },
   COMING_SOON: {
@@ -171,8 +200,9 @@ const isOpenNow = (openingHours: string): { isOpen: boolean; nextStatus: string 
   }
 };
 
-export function StoreCard({ store, onClick, showBorderStatus = true }: StoreCardProps) {
-  const status = statusConfig[store.status];
+export function StoreCard({ store, onClick, showBorderStatus = true, isUpcoming = false }: StoreCardProps) {
+  const config = isUpcoming ? upcomingStatusConfig : statusConfig;
+  const status = config[store.status];
   const StatusIcon = status.icon;
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -309,14 +339,14 @@ export function StoreCard({ store, onClick, showBorderStatus = true }: StoreCard
                     <div className="flex items-center gap-1 text-xs text-muted-foreground">
                       <Phone className="w-3 h-3" />
                       <span className="blur-sm select-none">{maskPhone(store.phone)}</span>
-                      <Eye className="w-3 h-3 ml-1 text-emerald-500" />
+                      <Eye className={`w-3 h-3 ml-1 ${isUpcoming ? 'text-amber-500' : 'text-emerald-500'}`} />
                     </div>
                   )}
                   {store.website && (
                     <div className="flex items-center gap-1 text-xs text-muted-foreground">
                       <Globe className="w-3 h-3" />
                       <span className="blur-sm select-none">{maskWebsite(store.website)}</span>
-                      <Eye className="w-3 h-3 ml-1 text-emerald-500" />
+                      <Eye className={`w-3 h-3 ml-1 ${isUpcoming ? 'text-amber-500' : 'text-emerald-500'}`} />
                     </div>
                   )}
                 </div>
@@ -327,7 +357,7 @@ export function StoreCard({ store, onClick, showBorderStatus = true }: StoreCard
                     e.stopPropagation();
                     setIsDialogOpen(true);
                   }}
-                  className="w-full mt-3 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white text-xs h-8"
+                  className={`w-full mt-3 text-white text-xs h-8 ${isUpcoming ? 'bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600' : 'bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600'}`}
                 >
                   <Eye className="w-3 h-3 mr-1" />
                   View Details
@@ -480,7 +510,7 @@ export function StoreCard({ store, onClick, showBorderStatus = true }: StoreCard
               {store.phone && (
                 <Button
                   asChild
-                  className="flex-1 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white"
+                  className={`flex-1 text-white ${isUpcoming ? 'bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600' : 'bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600'}`}
                 >
                   <a href={`tel:${store.phone}`}>
                     <Phone className="w-4 h-4 mr-2" />
@@ -492,7 +522,7 @@ export function StoreCard({ store, onClick, showBorderStatus = true }: StoreCard
                 <Button
                   asChild
                   variant="outline"
-                  className="flex-1 border-emerald-500 text-emerald-600 hover:bg-emerald-50 dark:border-emerald-400 dark:text-emerald-400 dark:hover:bg-emerald-950"
+                  className={`flex-1 ${isUpcoming ? 'border-amber-500 text-amber-600 hover:bg-amber-50 dark:border-amber-400 dark:text-amber-400 dark:hover:bg-amber-950' : 'border-emerald-500 text-emerald-600 hover:bg-emerald-50 dark:border-emerald-400 dark:text-emerald-400 dark:hover:bg-emerald-950'}`}
                 >
                   <a
                     href={store.website}

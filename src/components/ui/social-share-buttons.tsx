@@ -178,7 +178,7 @@ export function SocialShareButtons({
   // Icons variant - default, just icons
   return (
     <div className={`flex items-center gap-1.5 ${className}`}>
-      <span className="text-xs text-muted-foreground mr-1 hidden sm:inline">Share:</span>
+      <span className="text-xs text-muted-foreground mr-1">Share:</span>
       {sharePlatforms.map((platform) => (
         <motion.button
           key={platform.key}

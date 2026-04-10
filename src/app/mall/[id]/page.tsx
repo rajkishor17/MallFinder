@@ -32,6 +32,7 @@ import { StoreForm } from '@/components/store/StoreForm';
 import { MallJsonLd } from '@/components/seo/JsonLd';
 import { AdvertisementBanner, SidebarAdvertisements } from '@/components/advertisement/AdvertisementBanner';
 import { SocialShareButtons } from '@/components/ui/social-share-buttons';
+import { SocialLinks } from '@/components/ui/social-links';
 import {
   ArrowLeft,
   MapPin,
@@ -85,6 +86,12 @@ interface SiteSettings {
   siteName: string;
   siteTagline: string;
   siteLogo: string;
+  facebook?: string;
+  twitter?: string;
+  instagram?: string;
+  linkedin?: string;
+  youtube?: string;
+  whatsapp?: string;
 }
 
 export default function MallLandingPage({ params }: PageProps) {
@@ -101,6 +108,12 @@ export default function MallLandingPage({ params }: PageProps) {
     siteName: 'MallFinder',
     siteTagline: 'Discover Shopping Destinations',
     siteLogo: '',
+    facebook: '',
+    twitter: '',
+    instagram: '',
+    linkedin: '',
+    youtube: '',
+    whatsapp: '',
   });
   
   // Authentication state
@@ -197,6 +210,12 @@ export default function MallLandingPage({ params }: PageProps) {
             siteName: data.siteName || 'MallFinder',
             siteTagline: data.siteTagline || 'Discover Shopping Destinations',
             siteLogo: data.siteLogo || '',
+            facebook: data.facebook || '',
+            twitter: data.twitter || '',
+            instagram: data.instagram || '',
+            linkedin: data.linkedin || '',
+            youtube: data.youtube || '',
+            whatsapp: data.whatsapp || '',
           });
         }
       } catch {
@@ -603,6 +622,13 @@ export default function MallLandingPage({ params }: PageProps) {
                   <span className="hidden sm:inline">Logout</span>
                 </Button>
               )}
+              
+              {/* Social Links in Header */}
+              {(siteSettings.facebook || siteSettings.twitter || siteSettings.instagram || siteSettings.linkedin || siteSettings.youtube || siteSettings.whatsapp) && (
+                <div className="hidden lg:flex items-center ml-2 pl-2 border-l">
+                  <SocialLinks links={siteSettings} iconSize="sm" />
+                </div>
+              )}
             </nav>
 
             {/* Mobile Menu Button */}
@@ -619,6 +645,13 @@ export default function MallLandingPage({ params }: PageProps) {
           {/* Mobile Navigation Menu */}
           {mobileMenuOpen && (
             <nav className="sm:hidden pb-4 border-t pt-2">
+              {/* Social Links in Mobile Menu */}
+              {(siteSettings.facebook || siteSettings.twitter || siteSettings.instagram || siteSettings.linkedin || siteSettings.youtube || siteSettings.whatsapp) && (
+                <div className="mb-3 pb-3 border-b px-4">
+                  <p className="text-xs text-muted-foreground mb-2">Follow us:</p>
+                  <SocialLinks links={siteSettings} iconSize="sm" />
+                </div>
+              )}
               <div className="flex flex-col gap-1">
                 <Link href="/" onClick={() => setMobileMenuOpen(false)}>
                   <Button variant="ghost" className="w-full justify-start">
@@ -894,53 +927,52 @@ export default function MallLandingPage({ params }: PageProps) {
           </CardContent>
         </Card>
 
-        {/* Mall Details & Map */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          <Card>
-            <CardHeader>
-              <CardTitle>About</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground mb-4">{mall.description}</p>
-              
-              {mall.features && mall.features.length > 0 && (
-                <div className="mb-4">
-                  <p className="text-sm font-medium mb-2">Features</p>
-                  <div className="flex flex-wrap gap-2">
-                    {mall.features.map((feature, index) => (
-                      <Badge key={index} variant="secondary">
-                        {feature}
-                      </Badge>
-                    ))}
-                  </div>
+        {/* Mall Details Section */}
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle>About the Mall</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-muted-foreground mb-4">{mall.description}</p>
+            
+            {mall.features && mall.features.length > 0 && (
+              <div className="mb-4">
+                <p className="text-sm font-medium mb-2">Features</p>
+                <div className="flex flex-wrap gap-2">
+                  {mall.features.map((feature, index) => (
+                    <Badge key={index} variant="secondary">
+                      {feature}
+                    </Badge>
+                  ))}
                 </div>
-              )}
-              
-              {mall.amenities && mall.amenities.length > 0 && (
-                <div>
-                  <p className="text-sm font-medium mb-2">Amenities</p>
-                  <div className="flex flex-wrap gap-2">
-                    {mall.amenities.map((amenity, index) => (
-                      <Badge key={index} variant="outline">
-                        {amenity}
-                      </Badge>
-                    ))}
-                  </div>
+              </div>
+            )}
+            
+            {mall.amenities && mall.amenities.length > 0 && (
+              <div>
+                <p className="text-sm font-medium mb-2">Amenities</p>
+                <div className="flex flex-wrap gap-2">
+                  {mall.amenities.map((amenity, index) => (
+                    <Badge key={index} variant="outline">
+                      {amenity}
+                    </Badge>
+                  ))}
                 </div>
-              )}
-            </CardContent>
-          </Card>
+              </div>
+            )}
+          </CardContent>
+        </Card>
 
-          {mall.coordinates && (
-            <div className="h-64 lg:h-full min-h-64 rounded-lg overflow-hidden shadow-lg border bg-white">
-              <MallMap
-                malls={[mall]}
-                selectedMall={mall}
-                onMallSelect={() => {}}
-              />
-            </div>
-          )}
-        </div>
+        {/* Mall Map */}
+        {mall.coordinates && (
+          <div className="h-64 lg:h-80 rounded-lg overflow-hidden shadow-lg border bg-white mb-6">
+            <MallMap
+              malls={[mall]}
+              selectedMall={mall}
+              onMallSelect={() => {}}
+            />
+          </div>
+        )}
 
         {/* Quick Stats - Compact & Clickable */}
         <div className="grid grid-cols-4 gap-2 mb-4">
@@ -1167,6 +1199,7 @@ export default function MallLandingPage({ params }: PageProps) {
                           <div key={store.id} className="relative group">
                             <StoreCard
                               store={store}
+                              isUpcoming={mall.category === 'upcoming'}
                               onClick={() => {
                                 if (isAuthenticated) {
                                   setEditingStore(store);
@@ -1282,6 +1315,7 @@ export default function MallLandingPage({ params }: PageProps) {
                               <div key={store.id} className="relative group">
                                 <StoreCard
                                   store={store}
+                                  isUpcoming={mall.category === 'upcoming'}
                                   onClick={() => {
                                     if (isAuthenticated) {
                                       setEditingStore(store);
@@ -1583,9 +1617,17 @@ export default function MallLandingPage({ params }: PageProps) {
                 )}
                 <span className="font-semibold">{siteSettings.siteName}</span>
               </Link>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-muted-foreground mb-4">
                 {siteSettings.siteTagline}
               </p>
+              
+              {/* Social Links */}
+              {(siteSettings.facebook || siteSettings.twitter || siteSettings.instagram || siteSettings.linkedin || siteSettings.youtube || siteSettings.whatsapp) && (
+                <div>
+                  <p className="text-sm font-medium mb-3">Follow us:</p>
+                  <SocialLinks links={siteSettings} iconSize="sm" />
+                </div>
+              )}
             </div>
 
             {/* Quick Links */}

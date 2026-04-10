@@ -573,7 +573,7 @@ export default function AdsManagement() {
                     </SelectTrigger>
                     <SelectContent>
                       {AD_POSITIONS.map((pos) => (
-                        <SelectItem key={pos} value={pos}>{pos}</SelectItem>
+                        <SelectItem key={pos.value} value={pos.value}>{pos.label}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
@@ -589,7 +589,7 @@ export default function AdsManagement() {
                     </SelectTrigger>
                     <SelectContent>
                       {AD_TYPES.map((type) => (
-                        <SelectItem key={type} value={type}>{type}</SelectItem>
+                        <SelectItem key={type.value} value={type.value}>{type.label}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
