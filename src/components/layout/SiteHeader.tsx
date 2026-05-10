@@ -22,6 +22,7 @@ interface SocialSettings {
   linkedin?: string;
   youtube?: string;
   whatsapp?: string;
+  pinterest?: string;
 }
 
 export function SiteHeader({ isAdmin = false, children, siteName: propSiteName, siteTagline: propSiteTagline, siteLogo: propSiteLogo }: SiteHeaderProps) {
@@ -52,6 +53,7 @@ export function SiteHeader({ isAdmin = false, children, siteName: propSiteName, 
                 linkedin: data.linkedin || '',
                 youtube: data.youtube || '',
                 whatsapp: data.whatsapp || '',
+                pinterest: data.pinterest || '',
               },
             });
           }
@@ -77,7 +79,8 @@ export function SiteHeader({ isAdmin = false, children, siteName: propSiteName, 
     settings.social.instagram ||
     settings.social.linkedin ||
     settings.social.youtube ||
-    settings.social.whatsapp
+    settings.social.whatsapp ||
+    settings.social.pinterest
   );
 
   return (

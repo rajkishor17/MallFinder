@@ -76,6 +76,7 @@ interface SiteSettings {
   linkedin?: string;
   youtube?: string;
   whatsapp?: string;
+  pinterest?: string;
 }
 
 export default function PublicHomePage() {
@@ -104,6 +105,7 @@ export default function PublicHomePage() {
     linkedin: '',
     youtube: '',
     whatsapp: '',
+    pinterest: '',
   });
   
   // Map location filters
@@ -158,6 +160,7 @@ export default function PublicHomePage() {
           linkedin: data.linkedin || '',
           youtube: data.youtube || '',
           whatsapp: data.whatsapp || '',
+          pinterest: data.pinterest || '',
         });
       }
     } catch {
@@ -383,7 +386,7 @@ export default function PublicHomePage() {
               </Link>
               
               {/* Social Links in Header */}
-              {(siteSettings.facebook || siteSettings.twitter || siteSettings.instagram || siteSettings.linkedin || siteSettings.youtube || siteSettings.whatsapp) && (
+              {(siteSettings.facebook || siteSettings.twitter || siteSettings.instagram || siteSettings.linkedin || siteSettings.youtube || siteSettings.whatsapp || siteSettings.pinterest) && (
                 <div className="hidden lg:flex items-center ml-2 pl-2 border-l">
                   <SocialLinks links={siteSettings} iconSize="sm" />
                 </div>
@@ -405,7 +408,7 @@ export default function PublicHomePage() {
           {mobileMenuOpen && (
             <nav className="sm:hidden pb-4 border-t pt-2">
               {/* Social Links in Mobile Menu */}
-              {(siteSettings.facebook || siteSettings.twitter || siteSettings.instagram || siteSettings.linkedin || siteSettings.youtube || siteSettings.whatsapp) && (
+              {(siteSettings.facebook || siteSettings.twitter || siteSettings.instagram || siteSettings.linkedin || siteSettings.youtube || siteSettings.whatsapp || siteSettings.pinterest) && (
                 <div className="mb-3 pb-3 border-b px-4">
                   <p className="text-xs text-muted-foreground mb-2">Follow us:</p>
                   <SocialLinks links={siteSettings} iconSize="sm" />

@@ -15,6 +15,7 @@ interface SiteSettings {
   linkedin?: string;
   youtube?: string;
   whatsapp?: string;
+  pinterest?: string;
 }
 
 export function SiteFooter() {
@@ -42,6 +43,7 @@ export function SiteFooter() {
             linkedin: data.linkedin || '',
             youtube: data.youtube || '',
             whatsapp: data.whatsapp || '',
+            pinterest: data.pinterest || '',
           });
         }
       } catch (error) {
@@ -60,6 +62,7 @@ export function SiteFooter() {
     linkedin: settings.linkedin,
     youtube: settings.youtube,
     whatsapp: settings.whatsapp,
+    pinterest: settings.pinterest,
   };
 
   const hasSocialLinks = Object.values(socialLinks).some(Boolean);

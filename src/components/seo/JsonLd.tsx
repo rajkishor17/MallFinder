@@ -127,6 +127,8 @@ export function OrganizationJsonLd() {
       'https://twitter.com/mallfinder',
       'https://facebook.com/mallfinder',
       'https://instagram.com/mallfinder',
+      'https://pinterest.com/mallfinder',
+      'https://wa.me/919876543210',
     ],
     contactPoint: {
       '@type': 'ContactPoint',

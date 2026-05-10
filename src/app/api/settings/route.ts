@@ -24,6 +24,7 @@ export async function GET() {
       linkedin: settingsObject.linkedin || '',
       youtube: settingsObject.youtube || '',
       whatsapp: settingsObject.whatsapp || '',
+      pinterest: settingsObject.pinterest || '',
     });
   } catch (error) {
     console.error('Failed to fetch settings:', error);
@@ -59,6 +60,7 @@ export async function PUT(request: Request) {
       'linkedin',
       'youtube',
       'whatsapp',
+      'pinterest',
     ];
     
     // Update each setting
